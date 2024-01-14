@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Models.User;
 using System.Security.Claims;
+using DAL.Repo;
+using BLL;
 
 namespace SiteWeb.Controllers
 {
@@ -22,14 +24,14 @@ namespace SiteWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(VMLogin modelLogin)
         {
+            UserService userService = new UserService();
 
-            if (modelLogin.Email == "user@example.com" &&
-                modelLogin.PassWord == "123"
-                )
+            if (userService.LoginUser(modelLogin))
             {
                 List<Claim> claims = new List<Claim>() {
                     new Claim(ClaimTypes.NameIdentifier, modelLogin.Email),
-                    new Claim("OtherProperties","Example Role")
+                    new Claim("OtherProperties","Example Role"),
+                    new Claim(ClaimTypes.Name, modelLogin.Email),
 
                 };
 
@@ -46,12 +48,31 @@ namespace SiteWeb.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), properties);
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Todo");
             }
 
 
 
             ViewData["ValidateMessage"] = "user not found";
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(VMRegister newUser)
+        {
+            if (ModelState.IsValid)
+            {
+                UserService userService = new UserService();
+                userService.RegisterUser(newUser);
+                
+                return RedirectToAction("Login", "Access");
+
+            }
             return View();
         }
     }

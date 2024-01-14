@@ -5,21 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Entity
+namespace Models.User
 {
-    public class User
+    public class VMRegister
     {
         public int UserId { get; set; }
-
-        [Required]
-        [MaxLength(50)]
         public string Username { get; set; }
-
-        [Required]
         public string Password { get; set; }
-
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
     }
 }

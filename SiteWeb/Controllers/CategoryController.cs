@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using BLL;
 using Models.Category;
 using DAL.Entity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SiteWeb.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
        

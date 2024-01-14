@@ -10,6 +10,10 @@ namespace DAL
  
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<User> users { get; set; }
+
+        public DbSet<Todo> todos { get; set; }
+
 
         protected override void OnConfiguring
             (DbContextOptionsBuilder optionsBuilder)
